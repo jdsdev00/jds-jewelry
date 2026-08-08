@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   J.D.S. Jewelry — sistema de diseño
+   Paleta y tipografía tomadas del diseño base. Mobile first.
+   ========================================================================== */
+
+@theme {
+  /* Marca */
+  --color-forest: #0c2318;
+  --color-forest-soft: #1c4a30;
+  --color-gold: #c9a24a;
+  --color-gold-dark: #9c7f34;
+
+  /* Superficies */
+  --color-surface: #f6f7f4;
+  --color-line: #e7e9e4;
+
+  /* Texto */
+  --color-ink: #1c1f1c;
+  --color-ink-soft: #767b73;
+
+  /* Estados */
+  --color-danger: #b0453f;
+  --color-danger-soft: #f7ebea;
+
+  /* Tipografía */
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), ui-serif, Georgia, serif;
+
+  /* Curva de animación: la misma en todo el sitio para que se sienta
+     de una sola pieza, al estilo de las transiciones de iOS. */
+  --ease-fluid: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* Animaciones reutilizables */
+  --animate-rise: rise 0.5s var(--ease-fluid) both;
+  --animate-fade: fade 0.3s var(--ease-fluid) both;
+  --animate-scale-in: scale-in 0.28s var(--ease-spring) both;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Deja aire bajo el header sticky al saltar con anclas */
+    scroll-padding-top: 7rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* Evita el rebote horizontal en móvil */
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+
+  /* Foco visible y consistente, sin el outline nativo del navegador */
+  :focus-visible {
+    outline: 2px solid var(--color-forest-soft);
+    outline-offset: 2px;
+  }
+
+  /* Quita las flechas de los inputs numéricos: en el panel estorban */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer utilities {
+  /* Scroll horizontal sin barra visible (chips de categoría, miniaturas) */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Fondo de "estudio fotográfico" para las piezas sin foto cargada */
+  .jewel-backdrop {
+    background: radial-gradient(circle at 50% 40%, #faf8f2 0%, #ece3cf 100%);
+  }
+}
+
+/* Respeta a quien pide menos movimiento en el sistema operativo */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
