@@ -4,7 +4,7 @@
 import { SearchIcon } from "@/components/icons";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
-
+// c
 
 type CatalogHeaderProps = {
   searchOpen: boolean;
