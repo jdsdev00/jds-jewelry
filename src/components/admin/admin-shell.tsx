@@ -113,7 +113,7 @@ export function AdminShell({ adminName, children }: AdminShellProps) {
   const sidebarContent = (
     <>
       <div className="px-2 pb-6">
-        <Logo tone="light" />
+        <Logo/>
         <p className="mt-3 truncate pl-0.5 text-[11px] text-white/45">{adminName}</p>
       </div>
       {nav}
