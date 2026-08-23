@@ -48,7 +48,7 @@ function resolveSiteUrl(): string {
 export const siteUrl = resolveSiteUrl();
 
 export const site = {
-  name: "J.D.S. Jewelry",
+  name: "J.S. Jewelry",
   shortName: "JDS",
   tagline: "Piezas en oro y plata, hechas para durar.",
   description:
