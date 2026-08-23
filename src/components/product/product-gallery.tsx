@@ -2,11 +2,13 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { ProductMedia } from "@/components/catalog/product-media";
-import { ZoomInIcon } from "@/components/icons";
+import { ShareIcon, ZoomInIcon } from "@/components/icons";
 import { Lightbox } from "@/components/product/lightbox";
 import { Badge } from "@/components/ui/badge";
+import { site, siteUrl } from "@/lib/site";
 import type { ProductView } from "@/lib/products";
 import { cn } from "@/lib/utils";
 
@@ -16,13 +18,35 @@ type ProductGalleryProps = {
   product: ProductView;
 };
 
-/** Foto principal, miniaturas y acceso al visor ampliado. */
 export function ProductGallery({ product }: ProductGalleryProps) {
   const [index, setIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { images } = product;
   const hasThumbs = images.length > 1;
+
+  async function handleShare() {
+    const url = `${siteUrl}/producto/${product.slug}`;
+
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({
+          title: `${product.name} — ${site.name}`,
+          url,
+        });
+      } catch {
+        // El usuario cerró el menú de compartir del sistema.
+      }
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copiado");
+    } catch {
+      toast.error("No se pudo copiar el link");
+    }
+  }
 
   return (
     <div>
@@ -61,11 +85,21 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         ) : null}
       </button>
 
-      <div className="flex items-center gap-2 px-[18px] pt-3 text-[11px] text-forest sm:px-0">
+      <div className="flex items-center justify-between gap-2 px-[18px] pt-3 text-[11px] text-forest sm:px-0">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5">
           <ZoomInIcon className="size-[15px]" />
           Toca la imagen para hacer zoom
         </span>
+
+        <button
+          type="button"
+          onClick={handleShare}
+          aria-label="Compartir esta pieza"
+          className="inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 transition-opacity duration-200 ease-fluid active:opacity-60"
+        >
+          <ShareIcon className="size-[15px]" />
+          Compartir
+        </button>
       </div>
 
       {hasThumbs ? (

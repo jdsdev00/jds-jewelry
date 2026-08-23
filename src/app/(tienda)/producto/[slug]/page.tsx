@@ -69,8 +69,8 @@ export default async function ProductPage(props: PageProps<"/producto/[slug]">) 
 
   const related = await getRelatedProducts(product.categoryId, product.id);
   const consulta = whatsappLink(
-    `Hola ${site.name}, me interesa la pieza "${product.name}" (${formatPrice(product.price)}).`,
-  );
+  `Hola ${site.name}, me interesa la pieza "${product.name}" (${formatPrice(product.price)}).\n\n${siteUrl}/producto/${product.slug}`,
+);
 
   /**
    * Datos estructurados para los buscadores. Es lo que permite que Google
